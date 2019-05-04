@@ -31,7 +31,7 @@ def create_app(test_config=None):
     db.init_app(app)
 
     #Import models
-    from flaskr import model, book
+    from flaskr import model, book, Abstract_review, Amazon_review
 
     # Import controllers
     from flaskr import home_controller, book_controller, search_controller, auth_controller, about_controller, user_controller
