@@ -26,6 +26,7 @@ class RedditReview(Model):
         self.review_author = dictionary["review_author"]
         self.review_content = dictionary["review_content"]
 
+    @staticmethod
     def find_by_id(book_id):
         with app.app_context():
             cursor = get_db().cursor()
@@ -39,6 +40,7 @@ class RedditReview(Model):
                 reddit_reviews.append(reddit_review)
             return reddit_reviews
 
+    @staticmethod
     def find_by_isbn(isbn):
         with app.app_context():
             cursor = get_db().cursor()

@@ -1,6 +1,7 @@
-from abc import ABC, abstractmethod, abstractproperty
+import abc
+#from abc import ABC, abstractmethod, abstractproperty
 
-class ReviewObject(ABC):
+class ReviewObject():
     def __init__(self, dictionary):
         self.id = dictionary["id"]
         self.book_id = dictionary["book_id"]
@@ -10,6 +11,6 @@ class ReviewObject(ABC):
         self.review_source = dictionary["review_source"]
         self.review_content = dictionary["review_content"]
 
-    @abstractmethod
+    #@abstractmethod
     def find_by_id(book_id):
         pass

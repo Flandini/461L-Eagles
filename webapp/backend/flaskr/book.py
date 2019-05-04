@@ -61,7 +61,8 @@ class Book(Model):
             self.amazon_reviews = AmazonReview.find_by_id(self.id)
             self.bn_reviews = BnReview.find_by_id(self.id)
             self.reddit_reviews = RedditReview.find_by_id(self.id)
-
+    
+    @staticmethod
     def find(isbn):
         return Book(isbn);
 

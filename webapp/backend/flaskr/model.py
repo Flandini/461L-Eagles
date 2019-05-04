@@ -3,7 +3,6 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 from textblob import TextBlob
-from flaskr.auth_controller import login_required
 from flaskr.db import get_db
 
 class Model:

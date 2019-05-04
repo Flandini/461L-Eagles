@@ -28,6 +28,7 @@ class AmazonReview(ReviewObject):
         self.review_author = dictionary["review_author"]
         self.review_content = dictionary["review_content"]
 
+    @staticmethod
     def find_by_id(book_id):
         with app.app_context():
             cursor = get_db().cursor()
@@ -41,6 +42,7 @@ class AmazonReview(ReviewObject):
                 amazon_reviews.append(amazon_review)
             return amazon_reviews
 
+    @staticmethod
     def find_by_isbn(isbn):
         with app.app_context():
             cursor = get_db().cursor()

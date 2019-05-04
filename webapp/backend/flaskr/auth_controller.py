@@ -7,6 +7,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from flaskr.db import get_db
 
+from flaskr.auth import Auth
+
 bp = Blueprint('auth', __name__)
 
 
@@ -31,12 +33,15 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
+        g.user = Auth.get_user_by_id(user_id)
+        
+        '''
         cur=get_db().cursor()
         cur.execute(
             'SELECT * FROM users WHERE id = %s', (user_id,)
         )
         g.user=cur.fetchone()
-
+        '''
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
@@ -57,19 +62,28 @@ def register():
         elif not password:
             error = 'Password is required.'
         else:
+            user = Auth(username)
+            '''
             cur.execute(
                 'SELECT id FROM users WHERE username = %s', (username,)
             )
+            '''
+            '''
             if cur.fetchone() is not None:
+            '''
+            if user.id is not None:
                 error = 'User, {0}, is already registered.'.format(username)
                 flash(error)
 
         if error is None:
+            Auth.add_user(username, password)
+            '''
             cur.execute(
                 'INSERT INTO users (username, password) VALUES (%s, %s)',
                 (username, generate_password_hash(password))
             )
             db.commit()
+            '''
             return redirect(url_for('auth.login'))
 
     return render_template('auth/register.html')
@@ -81,16 +95,25 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        cur = get_db().cursor()
         error = None
+        
+        '''
+        cur = get_db().cursor()
         cur.execute(
             'SELECT * FROM users WHERE username = %s', (username,)
         )
         user=cur.fetchone()
+        '''
+        
+        
+        user_object = Auth(username)
+        user = user_object.to_dict()
+        
 
         if user is None:
             error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
+        #elif not check_password_hash(user['password'], password):
+        elif not user_object.check_password(password):
             error = 'Incorrect password.'
 
         if error is None:
