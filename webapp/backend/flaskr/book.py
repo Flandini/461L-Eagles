@@ -13,6 +13,8 @@ from flaskr.db import get_db
 app = Flask(__name__)
 from flaskr.model import Model
 from flaskr.Amazon_review import AmazonReview
+from flaskr.Reddit_review import RedditReview
+from flaskr.BarnesAndNoble_review import BnReview
 
 class Book(Model):
     table = 'books'
@@ -57,8 +59,8 @@ class Book(Model):
             self.similar_books = None
             self.twitter_reviews = None
             self.amazon_reviews = AmazonReview.find_by_id(self.id)
-            self.bn_reviews = None
-            self.reddit_reviews = None
+            self.bn_reviews = BnReview.find_by_id(self.id)
+            self.reddit_reviews = RedditReview.find_by_id(self.id)
 
     def find(isbn):
         return Book(isbn);
