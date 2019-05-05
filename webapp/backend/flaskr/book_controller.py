@@ -20,8 +20,6 @@ def show(isbn):
     if g.user and session['user_id'] and book is not None:
         current_user = User(session['user_id'])
         current_user.add_to_recently_viewed(isbn)
-
-    if current_user is not None:
         saved = current_user.book_is_saved(book.id, get_db().cursor())
     else:
         saved = False

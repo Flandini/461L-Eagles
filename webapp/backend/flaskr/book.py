@@ -17,6 +17,9 @@ from flaskr.Reddit_review import RedditReview
 from flaskr.BarnesAndNoble_review import BnReview
 from flaskr.Twitter_review import TwitterReview
 
+
+__metaclass__ = type
+
 class Book(Model):
     table = 'books'
 
@@ -101,7 +104,8 @@ class Book(Model):
 
 class SimilarBook(Book):
     def __init__(self, isbn):
-        super(SimilarBook, self).__init__(isbn)
+        Book.__init__(self, isbn)
+        # super(SimilarBook, self).__init__(isbn)
 
     # Necessary to avoid building a tree of all
     # books by finding similar books of similar books
