@@ -120,3 +120,4 @@ class SimilarBook(Book):
     def populate_reddit_reviews(self):
         self.reddit_reviews = []
 
+
