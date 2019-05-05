@@ -15,6 +15,7 @@ from flaskr.model import Model
 from flaskr.Amazon_review import AmazonReview
 from flaskr.Reddit_review import RedditReview
 from flaskr.BarnesAndNoble_review import BnReview
+from flaskr.Twitter_review import TwitterReview
 
 class Book(Model):
     table = 'books'
@@ -80,7 +81,7 @@ class Book(Model):
                 self.similar_books.append(SimilarBook(similar_books_dict['similar_' + str(idx)]))
 
     def populate_twitter_reviews(self):
-        self.twitter_reviewws = []
+        self.twitter_reviews = TwitterReview.find_by_id(self.id)
 
     def populate_amazon_reviews(self):
         self.amazon_reviews = AmazonReview.find_by_id(self.id)
