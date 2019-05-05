@@ -191,7 +191,7 @@
               <div class='card-body'>
                 <div class='container rounded'>
                   <div class='row'>
-                    {% for i in range(review['twitter_review']|length) %}
+                    {% for i in range(book.twitter_reviews|length) %}
                       {% if i < 8 %}
                       <div class='col-sm-6'>
                         <div style='height: 100%; width: 100%;'>
@@ -200,7 +200,7 @@
                               <div class='card-body rounded'>
 
                                 <div style='margin-bottom: 1em;'>
-                                  <span>{{ review['twitter_review'][i]['review_content'] }}</span>
+                                  <span>{{ book.twitter_reviews[i].review_content }}</span>
                                 </div>
 
                                 <div class='card-subtitle text-muted mb-2'>
