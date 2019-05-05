@@ -60,6 +60,14 @@ class User(Model):
         else:
             return False
 
+    def add_to_recently_viewed(self, book_id):
+        if book_id is not None:
+            cursor = get_db().cursor()
+            insert_query = "insert into recently_viewed (user_id, book_id) values (%s, %s)"
+            print("BOOK INSERTED INTO RECENTLY VIEWED")
+            cursor.execute(insert_query, (self.id, book_id,))
+            get_db().commit()
+
     @staticmethod
     def get_recently_viewed_query():
         query = "select * from users "\
