@@ -5,15 +5,15 @@
   <div id='book-metadata'>
     {% if book is not none %}
       <div class='row'>
-        <p id='book-id' style='display: none;'>{{ book['id'] }}</p>
+        <p id='book-id' style='display: none;'>{{ book.id }}</p>
 
         <div class='col-2 align-middle text-center' style='margin-left: 5%; max-width: 349px;'>
 
           <div class='card align-middle justify-content-center' style='margin-bottom: 3em;'>
-            <img style="height: 460px; width: 309px;" class='img-thumbnail' src="{{ book['cover'] }}" alt="{{ book['title'] }} - Book Cover">
+            <img style="height: 460px; width: 309px;" class='img-thumbnail' src="{{ book.cover }}" alt="{{ book.title }} - Book Cover">
             <div class='card-body'>
-              <h3 class='card-title' style='max-width: 309px;'>{{ book['title'] }}</h3>
-              <p style='padding-bottom: 1em;' class='card-text'>{{ book['author'] }}</p>
+              <h3 class='card-title' style='max-width: 309px;'>{{ book.title }}</h3>
+              <p style='padding-bottom: 1em;' class='card-text'>{{ book.author }}</p>
               {% if g.user %}
                 {% if saved %}
                   <button id='delete-button' type='button' class='btn btn-primary'>Removed From Saved Books</button>
@@ -82,7 +82,7 @@
               <div class='card-body'>
 
                 <p class='card-text'>
-                  {{ book['description'] }}
+                  {{ book.description }}
                 </p>
 
               </div>
@@ -97,7 +97,7 @@
             <div class='card'>
               <div class='card-body'>
                 <p class='card-text'>
-                  {{ book['details'] }}
+                  {{ book.details }}
                 </p>
               </div>
             </div>
@@ -109,7 +109,7 @@
             </h5>
             <div class='card'>
               <div class='card-body'>
-                <a href="{{ book['purchase_link'] }}">
+                <a href="{{ book.purchase_link }}">
                   <img style='max-width: 100%; height: auto;' src='/static/amazon-purchase.jpg' alt='Buy it on Amazon!'>
                 </a>
               </div>
@@ -128,7 +128,7 @@
               <div class='card-body text-center'>
 
                 <p class='card-text lead'>
-                  BookBrain Averaged Internet Rating: {{ book['average_review'] }}
+                  BookBrain Averaged Internet Rating: {{ book.average_review }}
                 </p>
 
                 <p class='card-text'>
@@ -148,7 +148,7 @@
                     </div>
 
                       <script type="text/javascript">
-                        var isbn = parseInt({{ book['isbn13'] }}); // Replace with ISBN / EISBN / ASIN of the book
+                        var isbn = parseInt({{ book.isbn13 }}); // Replace with ISBN / EISBN / ASIN of the book
                         //var isbn = 9780743273565;
                         //console.log(isbn);
                         var api_key = "606f342ab6dc508aa72d9332945344c9e47c7f57"; //Replace with the developer key (Submit the form to get a key)
@@ -229,7 +229,7 @@
           </div>
           {% endif %}
 
-          {% if review['amazon_review']|length %}
+          {% if book.amazon_reviews|length > 0 %}
           <div class='container-fluid' id='book-amazon-review' style='margin-bottom: 3%;'>
             <div class='card'>
               <h5 class='card-header'>
@@ -238,19 +238,19 @@
               </h5>
               <div class='card-body'>
                 <p class='card-text'>
-                {% for i in range(review['amazon_review']|length) %}
+                {% for i in range(book.amazon_reviews|length) %}
                 <div class='card'>
                   <div class='card-body rounded'>
                     <div class='row'>
                       <div>
-                        {{ review['amazon_review'][i]['review_content']}}
+                        {{ book.amazon_reviews[i].review_content }}
                       </div>
                     </div>
 
                     <div class='row'>
                       <div class='col-md-3 offset-md-9 justify-content-end text-right card-subtitle text-muted mb-2'>
                         <div>
-                          Written by {{ review['amazon_review'][i]['review_author'] }}
+                          Written by {{ book.amazon_reviews[i].review_author }}
                         </div>
 
                         <div class='subjectivity'>
@@ -276,7 +276,7 @@
           {% endif %}
 
 
-          {% if review['BN_review']|length > 0 %}
+          {% if book.bn_reviews|length > 0 %}
           <div class='container-fluid' id='book-BN-review' style='margin-bottom: 3%;'>
             <div class='card'>
               <h5 class='card-header'>
@@ -285,21 +285,21 @@
               </h5>
               <div class='card-body'>
                 <p class='card-text'>
-                {% for i in range(review['BN_review']|length) %}
+                {% for i in range(book.bn_reviews|length) %}
                 <div class='card'>
 
                   <div class='card-body rounded'>
 
                     <div class='row'>
                         <div>
-                        {{ review['BN_review'][i]['review_content'] }}
+                        {{ book.bn_reviews[i].review_content }}
                         </div>
                     </div>
 
                     <div class='row'>
                       <div class='col-md-3 offset-md-9 justify-content-end text-right card-subtitle text-muted mb-2'>
                         <div>
-                          Written by {{ review['BN_review'][i]['review_author'] }}
+                          Written by {{ book.bn_reviews[i].review_author }}
                         </div>
 
                         <div class='subjectivity'>
@@ -323,7 +323,7 @@
           </div>
           {% endif %}
 
-          {% if review['reddit_review']|length > 0 %}
+          {% if book.reddit_reviews|length > 0 %}
           <div class='container-fluid' id='book-reddit-review' style='margin-bottom: 5%;'>
             <div class='card'>
               <h5 class='card-header'>
@@ -333,20 +333,20 @@
               </h5>
               <div class='card-body'>
                 <p class='card-text'>
-                {% for i in range(review['reddit_review']|length) %}
+                {% for i in range(book.reddit_reviews|length) %}
                   {% if i < 6 %}
                   <div class='card'>
                     <div class='card-body rounded'>
                       <div class='row'>
                         <div>
-                          {{ review['reddit_review'][i]['review_content'] }}
+                          {{ book.reddit_reviews[i].review_content }}
                         </div>
                       </div>
 
                       <div class='row'>
                         <div class='col-md-3 offset-md-9 justify-content-end text-right card-subtitle text-muted mb-2'>
                           <div>
-                            Written by {{ review['reddit_review'][i]['review_author'] }}
+                            Written by {{ book.reddit_reviews[i].review_author }}
                           </div>
 
                           <div class='subjectivity'>

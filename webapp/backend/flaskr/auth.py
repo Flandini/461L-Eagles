@@ -55,7 +55,7 @@ class Auth(Model):
 
     @staticmethod
     def find(username):
-	return Auth(username)
+        return Auth(username)
 
     def to_dict(self):
-	return self.dict
+        return self.dict
