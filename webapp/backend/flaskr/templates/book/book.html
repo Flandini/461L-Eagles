@@ -43,15 +43,15 @@
                     <div class='center-block carousel-inner'>
 
                       <div style='width: 148px; height: 220px;' class='carousel-item active'>
-                        <a href='/book/{{similar[0]["id"]}}'>
+                        <a href='/book/{{ book.similar_books[0].id }}'>
                           <img class='img center-block' style='width: 148px; height: 220px;' src='{{ similar[0]["cover"] }}'>
                         </a>
                       </div>
 
-                      {% for b in similar[1:] %}
+                      {% for similar_book in book.similar_books[1:] %}
                       <div style='width: 148px; height: 220px;' class='justify-content-center carousel-item'>
-                        <a href='/book/{{b["id"]}}'>
-                          <img style='width: 148px; height: 220px;' src='{{ b["cover"] }}'>
+                        <a href='/book/{{ similar_book.id }}'>
+                          <img style='width: 148px; height: 220px;' src='{{ similar_book.cover }}'>
                         </a>
                       </div>
                       {% endfor %}
@@ -178,7 +178,7 @@
             </div>
           </div>
 
-          {% if review['twitter_review']|length > 0 %}
+          {% if book.twitter_reviews|length > 0 %}
           <div class='container-fluid' id='book-twitter-review' style='margin-bottom: 3%;'>
 
             <div class='card'>
@@ -205,11 +205,11 @@
 
                                 <div class='card-subtitle text-muted mb-2'>
                                   <div class='subjectivity'>
-                                    <span>Subjectivity: {{ '%.2f' % sentiments['twitter_review_sentiment'][i].subjectivity }} </span>
+                                    <span>Subjectivity: {{ '%.2f' % book.twitter_reviews[i].subjectivity }} </span>
                                   </div>
 
                                   <div class='polarity'>
-                                    <span>Polarity: {{ '%.2f' % sentiments['twitter_review_sentiment'][i].polarity }}</span>
+                                    <span>Polarity: {{ '%.2f' % book.twitter_reviews[i].polarity }}</span>
                                   </div>
                                 </div>
 
@@ -255,13 +255,13 @@
 
                         <div class='subjectivity'>
                           <span>
-                            Subjectivity {{ '%.2f' % sentiments['amazon_review_sentiment'][i].subjectivity }}
+                            Subjectivity {{ '%.2f' % book.amazon_reviews[i].subjectivity }}
                           </span>
                         </div>
 
                         <div class='polarity'>
                           <span>
-                            Polarity {{ '%.2f' % sentiments['amazon_review_sentiment'][i].polarity }}
+                            Polarity {{ '%.2f' % book.amazon_reviews[i].polarity }}
                           </span>
                         </div>
                       </div>
@@ -303,11 +303,11 @@
                         </div>
 
                         <div class='subjectivity'>
-                          <span>Subjectivity {{ '%.2f' % sentiments['BN_review_sentiment'][i].subjectivity }}</span>
+                          <span>Subjectivity {{ '%.2f' % book.bn_reviews[i].subjectivity }}</span>
                         </div>
 
                         <div class='polarity'>
-                          <span>Polarity {{ '%.2f' % sentiments['BN_review_sentiment'][i].polarity }}</span>
+                          <span>Polarity {{ '%.2f' % book.bn_reviews[i].polarity }}</span>
                         </div>
                       </div>
                     </div>
@@ -350,11 +350,11 @@
                           </div>
 
                           <div class='subjectivity'>
-                            <span>Subjectivity {{ '%.2f' % sentiments['reddit_review_sentiment'][i].subjectivity }}</span>
+                            <span>Subjectivity {{ '%.2f' % book.reddit_reviews[i].subjectivity }}</span>
                           </div>
 
                           <div class='polarity'>
-                            <span>Polarity {{ '%.2f' % sentiments['reddit_review_sentiment'][i].polarity }}</span>
+                            <span>Polarity {{ '%.2f' % book.reddit_reviews[i].polarity }}</span>
                           </div>
                         </div>
                       </div>

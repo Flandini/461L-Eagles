@@ -67,7 +67,7 @@ class Book(Model):
 
         with app.app_context():
             self.cursor.execute(
-                'select * from similar where similar.id = %s', (self.isbn,)
+                'select * from similar where similar.id = %s', (self.id,)
             )
 
             similar_books_dict = self.cursor.fetchone()
@@ -100,13 +100,13 @@ class Book(Model):
 
 class SimilarBook(Book):
     def __init__(self, isbn):
-        super(SimilarBook, self).__init__()
+        super(SimilarBook, self).__init__(isbn)
 
     # Necessary to avoid building a tree of all
     # books by finding similar books of similar books
     # of similar books... etc.
     def populate_similar_books(self):
-        this.similar_books = []
+        self.similar_books = []
 
     def populate_twitter_reviews(self):
         self.twitter_reviewws = []
