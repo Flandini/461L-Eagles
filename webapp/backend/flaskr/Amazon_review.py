@@ -13,9 +13,9 @@ from flaskr.db import get_db
 # Models
 app = Flask(__name__)
 from flaskr.model import Model
-from flaskr.Abstract_review import ReviewObject
+from flaskr.Abstract_review import Review
 
-class AmazonReview(ReviewObject):
+class AmazonReview(Review):
     def __init__(self, dictionary):
         self.dictionary = dictionary
         self.id = dictionary["id"]
@@ -27,6 +27,7 @@ class AmazonReview(ReviewObject):
         self.average_rating = dictionary["average_rating"]
         self.review_author = dictionary["review_author"]
         self.review_content = dictionary["review_content"]
+        self.set_sentiment()
 
     @staticmethod
     def find_by_id(book_id):

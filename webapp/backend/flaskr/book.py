@@ -55,16 +55,67 @@ class Book(Model):
             self.description = self.dict['description']
             self.purchase_link = self.dict['purchase_link']
 
-            # TODO
-            self.similar_books = None
-            self.twitter_reviews = None
-            self.amazon_reviews = AmazonReview.find_by_id(self.id)
-            self.bn_reviews = BnReview.find_by_id(self.id)
-            self.reddit_reviews = RedditReview.find_by_id(self.id)
-    
+            self.populate_similar_books()
+            self.populate_twitter_reviews()
+            self.populate_amazon_reviews()
+            self.populate_bn_reviews()
+            self.populate_reddit_reviews()
+
+    def populate_similar_books(self):
+        if self.isbn is None:
+            return
+
+        with app.app_context():
+            self.cursor.execute(
+                'select * from similar where similar.id = %s', (self.id,)
+            )
+
+            similar_books_dict = self.cursor.fetchone()
+            self.similar_books = []
+
+            if similar_books_dict is None:
+                return
+
+            for idx in range(1, 6):
+                self.similar_books.append(SimilarBook(similar_books_dict['similar_' + str(idx)]))
+
+    def populate_twitter_reviews(self):
+        self.twitter_reviewws = []
+
+    def populate_amazon_reviews(self):
+        self.amazon_reviews = AmazonReview.find_by_id(self.id)
+
+    def populate_bn_reviews(self):
+        self.bn_reviews = BnReview.find_by_id(self.id)
+
+    def populate_reddit_reviews(self):
+        self.reddit_reviews = RedditReview.find_by_id(self.id)
+
     @staticmethod
     def find(isbn):
         return Book(isbn);
 
     def to_dict(self):
         return self.dict
+
+class SimilarBook(Book):
+    def __init__(self, isbn):
+        super(SimilarBook, self).__init__(isbn)
+
+    # Necessary to avoid building a tree of all
+    # books by finding similar books of similar books
+    # of similar books... etc.
+    def populate_similar_books(self):
+        self.similar_books = []
+
+    def populate_twitter_reviews(self):
+        self.twitter_reviewws = []
+
+    def populate_amazon_reviews(self):
+        self.amazon_reviews = []
+
+    def populate_bn_reviews(self):
+        self.bn_reviews = []
+
+    def populate_reddit_reviews(self):
+        self.reddit_reviews = []

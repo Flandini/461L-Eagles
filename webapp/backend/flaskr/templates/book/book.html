@@ -5,15 +5,15 @@
   <div id='book-metadata'>
     {% if book is not none %}
       <div class='row'>
-        <p id='book-id' style='display: none;'>{{ book['id'] }}</p>
+        <p id='book-id' style='display: none;'>{{ book.id }}</p>
 
         <div class='col-2 align-middle text-center' style='margin-left: 5%; max-width: 349px;'>
 
           <div class='card align-middle justify-content-center' style='margin-bottom: 3em;'>
-            <img style="height: 460px; width: 309px;" class='img-thumbnail' src="{{ book['cover'] }}" alt="{{ book['title'] }} - Book Cover">
+            <img style="height: 460px; width: 309px;" class='img-thumbnail' src="{{ book.cover }}" alt="{{ book.title }} - Book Cover">
             <div class='card-body'>
-              <h3 class='card-title' style='max-width: 309px;'>{{ book['title'] }}</h3>
-              <p style='padding-bottom: 1em;' class='card-text'>{{ book['author'] }}</p>
+              <h3 class='card-title' style='max-width: 309px;'>{{ book.title }}</h3>
+              <p style='padding-bottom: 1em;' class='card-text'>{{ book.author }}</p>
               {% if g.user %}
                 {% if saved %}
                   <button id='delete-button' type='button' class='btn btn-primary'>Removed From Saved Books</button>
@@ -43,15 +43,15 @@
                     <div class='center-block carousel-inner'>
 
                       <div style='width: 148px; height: 220px;' class='carousel-item active'>
-                        <a href='/book/{{similar[0]["id"]}}'>
-                          <img class='img center-block' style='width: 148px; height: 220px;' src='{{ similar[0]["cover"] }}'>
+                        <a href='/book/{{ book.similar_books[0].id }}'>
+                          <img class='img center-block' style='width: 148px; height: 220px;' src='{{ book.similar_books[0].cover }}'>
                         </a>
                       </div>
 
-                      {% for b in similar[1:] %}
+                      {% for similar_book in book.similar_books[1:] %}
                       <div style='width: 148px; height: 220px;' class='justify-content-center carousel-item'>
-                        <a href='/book/{{b["id"]}}'>
-                          <img style='width: 148px; height: 220px;' src='{{ b["cover"] }}'>
+                        <a href='/book/{{ similar_book.id }}'>
+                          <img style='width: 148px; height: 220px;' src='{{ similar_book.cover }}'>
                         </a>
                       </div>
                       {% endfor %}
@@ -82,7 +82,7 @@
               <div class='card-body'>
 
                 <p class='card-text'>
-                  {{ book['description'] }}
+                  {{ book.description }}
                 </p>
 
               </div>
@@ -97,7 +97,7 @@
             <div class='card'>
               <div class='card-body'>
                 <p class='card-text'>
-                  {{ book['details'] }}
+                  {{ book.details }}
                 </p>
               </div>
             </div>
@@ -109,7 +109,7 @@
             </h5>
             <div class='card'>
               <div class='card-body'>
-                <a href="{{ book['purchase_link'] }}">
+                <a href="{{ book.purchase_link }}">
                   <img style='max-width: 100%; height: auto;' src='/static/amazon-purchase.jpg' alt='Buy it on Amazon!'>
                 </a>
               </div>
@@ -128,7 +128,7 @@
               <div class='card-body text-center'>
 
                 <p class='card-text lead'>
-                  BookBrain Averaged Internet Rating: {{ book['average_review'] }}
+                  BookBrain Averaged Internet Rating: {{ book.average_review }}
                 </p>
 
                 <p class='card-text'>
@@ -148,7 +148,7 @@
                     </div>
 
                       <script type="text/javascript">
-                        var isbn = parseInt({{ book['isbn13'] }}); // Replace with ISBN / EISBN / ASIN of the book
+                        var isbn = parseInt({{ book.isbn13 }}); // Replace with ISBN / EISBN / ASIN of the book
                         //var isbn = 9780743273565;
                         //console.log(isbn);
                         var api_key = "606f342ab6dc508aa72d9332945344c9e47c7f57"; //Replace with the developer key (Submit the form to get a key)
@@ -178,7 +178,7 @@
             </div>
           </div>
 
-          {% if review['twitter_review']|length > 0 %}
+          {% if book.twitter_reviews|length > 0 %}
           <div class='container-fluid' id='book-twitter-review' style='margin-bottom: 3%;'>
 
             <div class='card'>
@@ -205,11 +205,11 @@
 
                                 <div class='card-subtitle text-muted mb-2'>
                                   <div class='subjectivity'>
-                                    <span>Subjectivity: {{ '%.2f' % sentiments['twitter_review_sentiment'][i].subjectivity }} </span>
+                                    <span>Subjectivity: {{ '%.2f' % book.twitter_reviews[i].subjectivity }} </span>
                                   </div>
 
                                   <div class='polarity'>
-                                    <span>Polarity: {{ '%.2f' % sentiments['twitter_review_sentiment'][i].polarity }}</span>
+                                    <span>Polarity: {{ '%.2f' % book.twitter_reviews[i].polarity }}</span>
                                   </div>
                                 </div>
 
@@ -229,7 +229,7 @@
           </div>
           {% endif %}
 
-          {% if review['amazon_review']|length %}
+          {% if book.amazon_reviews|length > 0 %}
           <div class='container-fluid' id='book-amazon-review' style='margin-bottom: 3%;'>
             <div class='card'>
               <h5 class='card-header'>
@@ -238,30 +238,30 @@
               </h5>
               <div class='card-body'>
                 <p class='card-text'>
-                {% for i in range(review['amazon_review']|length) %}
+                {% for i in range(book.amazon_reviews|length) %}
                 <div class='card'>
                   <div class='card-body rounded'>
                     <div class='row'>
                       <div>
-                        {{ review['amazon_review'][i]['review_content']}}
+                        {{ book.amazon_reviews[i].review_content }}
                       </div>
                     </div>
 
                     <div class='row'>
                       <div class='col-md-3 offset-md-9 justify-content-end text-right card-subtitle text-muted mb-2'>
                         <div>
-                          Written by {{ review['amazon_review'][i]['review_author'] }}
+                          Written by {{ book.amazon_reviews[i].review_author }}
                         </div>
 
                         <div class='subjectivity'>
                           <span>
-                            Subjectivity {{ '%.2f' % sentiments['amazon_review_sentiment'][i].subjectivity }}
+                            Subjectivity {{ '%.2f' % book.amazon_reviews[i].subjectivity }}
                           </span>
                         </div>
 
                         <div class='polarity'>
                           <span>
-                            Polarity {{ '%.2f' % sentiments['amazon_review_sentiment'][i].polarity }}
+                            Polarity {{ '%.2f' % book.amazon_reviews[i].polarity }}
                           </span>
                         </div>
                       </div>
@@ -276,7 +276,7 @@
           {% endif %}
 
 
-          {% if review['BN_review']|length > 0 %}
+          {% if book.bn_reviews|length > 0 %}
           <div class='container-fluid' id='book-BN-review' style='margin-bottom: 3%;'>
             <div class='card'>
               <h5 class='card-header'>
@@ -285,29 +285,29 @@
               </h5>
               <div class='card-body'>
                 <p class='card-text'>
-                {% for i in range(review['BN_review']|length) %}
+                {% for i in range(book.bn_reviews|length) %}
                 <div class='card'>
 
                   <div class='card-body rounded'>
 
                     <div class='row'>
                         <div>
-                        {{ review['BN_review'][i]['review_content'] }}
+                        {{ book.bn_reviews[i].review_content }}
                         </div>
                     </div>
 
                     <div class='row'>
                       <div class='col-md-3 offset-md-9 justify-content-end text-right card-subtitle text-muted mb-2'>
                         <div>
-                          Written by {{ review['BN_review'][i]['review_author'] }}
+                          Written by {{ book.bn_reviews[i].review_author }}
                         </div>
 
                         <div class='subjectivity'>
-                          <span>Subjectivity {{ '%.2f' % sentiments['BN_review_sentiment'][i].subjectivity }}</span>
+                          <span>Subjectivity {{ '%.2f' % book.bn_reviews[i].subjectivity }}</span>
                         </div>
 
                         <div class='polarity'>
-                          <span>Polarity {{ '%.2f' % sentiments['BN_review_sentiment'][i].polarity }}</span>
+                          <span>Polarity {{ '%.2f' % book.bn_reviews[i].polarity }}</span>
                         </div>
                       </div>
                     </div>
@@ -323,7 +323,7 @@
           </div>
           {% endif %}
 
-          {% if review['reddit_review']|length > 0 %}
+          {% if book.reddit_reviews|length > 0 %}
           <div class='container-fluid' id='book-reddit-review' style='margin-bottom: 5%;'>
             <div class='card'>
               <h5 class='card-header'>
@@ -333,28 +333,28 @@
               </h5>
               <div class='card-body'>
                 <p class='card-text'>
-                {% for i in range(review['reddit_review']|length) %}
+                {% for i in range(book.reddit_reviews|length) %}
                   {% if i < 6 %}
                   <div class='card'>
                     <div class='card-body rounded'>
                       <div class='row'>
                         <div>
-                          {{ review['reddit_review'][i]['review_content'] }}
+                          {{ book.reddit_reviews[i].review_content }}
                         </div>
                       </div>
 
                       <div class='row'>
                         <div class='col-md-3 offset-md-9 justify-content-end text-right card-subtitle text-muted mb-2'>
                           <div>
-                            Written by {{ review['reddit_review'][i]['review_author'] }}
+                            Written by {{ book.reddit_reviews[i].review_author }}
                           </div>
 
                           <div class='subjectivity'>
-                            <span>Subjectivity {{ '%.2f' % sentiments['reddit_review_sentiment'][i].subjectivity }}</span>
+                            <span>Subjectivity {{ '%.2f' % book.reddit_reviews[i].subjectivity }}</span>
                           </div>
 
                           <div class='polarity'>
-                            <span>Polarity {{ '%.2f' % sentiments['reddit_review_sentiment'][i].polarity }}</span>
+                            <span>Polarity {{ '%.2f' % book.reddit_reviews[i].polarity }}</span>
                           </div>
                         </div>
                       </div>
@@ -429,7 +429,7 @@
 
         $(this).attr('disabled', 'true');
 
-        var newButton = "<button id='save-button' class='btn btn-primary' type='button'>Remove From Saved Books</button>";
+        var newButton = "<button id='save-button' class='btn btn-primary' type='button'>Save</button>";
         $(this).parent().append(newButton);
         $(this).css("display", "none");
         register_save_button();

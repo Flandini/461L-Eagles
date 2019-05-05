@@ -13,8 +13,9 @@ from flaskr.db import get_db
 # Models
 app = Flask(__name__)
 from flaskr.model import Model
+from flaskr.Abstract_review import Review
 
-class RedditReview(Model):
+class RedditReview(Review):
     def __init__(self, dictionary):
         self.dictionary = dictionary
         self.id = dictionary["id"]
@@ -25,6 +26,7 @@ class RedditReview(Model):
         self.review_source = dictionary["review_source"]
         self.review_author = dictionary["review_author"]
         self.review_content = dictionary["review_content"]
+        self.set_sentiment()
 
     @staticmethod
     def find_by_id(book_id):
